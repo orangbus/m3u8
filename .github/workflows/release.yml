@@ -55,7 +55,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/your-app-${{ env.version }}-linux-amd64
+          asset_path: dist/m3d-${{ env.version }}-linux-amd64
           asset_name: m3d-${{ env.version }}-linux-amd64
           asset_content_type: application/octet-stream
 

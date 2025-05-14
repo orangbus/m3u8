@@ -10,8 +10,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/oopsguy/m3u8/parse"
-	"github.com/oopsguy/m3u8/tool"
+	"github.com/orangbus/m3u8/parse"
+	"github.com/orangbus/m3u8/tool"
 )
 
 const (

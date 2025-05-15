@@ -28,9 +28,9 @@ jobs:
         run: |
           mkdir -p dist
           # 构建各平台可执行文件并包含版本号
-          GOOS=linux GOARCH=amd64 go build -o dist/m3d-${{ env.version }}-linux-amd64 .
-          GOOS=darwin GOARCH=amd64 go build -o dist/m3d-${{ env.version }}-darwin-amd64 .
-          GOOS=windows GOARCH=amd64 go build -o dist/m3d-${{ env.version }}-windows-amd64.exe .
+          GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -extldflags=-static" -o dist/m3d-linux-amd64-${{ env.version }} .
+          GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w -extldflags=-static" -o dist/m3d-darwin-amd64-${{ env.version }} .
+          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w -extldflags=-static" -o dist/m3d-windows-amd64--${{ env.version }}.exe .
 
       - name: Create checksums
         run: |

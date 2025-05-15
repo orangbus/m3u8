@@ -68,7 +68,7 @@ func NewTask(output string, url string) (*Downloader, error) {
 }
 
 // Start runs downloader
-func (d *Downloader) Start(concurrency int) error {
+func (d *Downloader) Start(concurrency int, name string) error {
 	var wg sync.WaitGroup
 	// struct{} zero size
 	limitChan := make(chan struct{}, concurrency)
@@ -95,7 +95,7 @@ func (d *Downloader) Start(concurrency int) error {
 		limitChan <- struct{}{}
 	}
 	wg.Wait()
-	if err := d.merge(); err != nil {
+	if err := d.merge(name); err != nil {
 		return err
 	}
 	return nil
@@ -154,8 +154,8 @@ func (d *Downloader) download(segIndex int) error {
 	}
 	// Maybe it will be safer in this way...
 	atomic.AddInt32(&d.finish, 1)
-	//tool.DrawProgressBar("Downloading", float32(d.finish)/float32(d.segLen), progressWidth)
-	fmt.Printf("[download %6.2f%%] %s\n", float32(d.finish)/float32(d.segLen)*100, tsUrl)
+	tool.DrawProgressBar("Downloading", float32(d.finish)/float32(d.segLen), progressWidth)
+	//fmt.Printf("[download %6.2f%%] %s\n", float32(d.finish)/float32(d.segLen)*100, tsUrl)
 	return nil
 }
 
@@ -187,7 +187,7 @@ func (d *Downloader) back(segIndex int) error {
 	return nil
 }
 
-func (d *Downloader) merge() error {
+func (d *Downloader) merge(name string) error {
 	// In fact, the number of downloaded segments should be equal to number of m3u8 segments
 	missingCount := 0
 	for idx := 0; idx < d.segLen; idx++ {
@@ -202,7 +202,7 @@ func (d *Downloader) merge() error {
 	}
 
 	// Create a TS file for merging, all segment files will be written to this file.
-	mFilePath := filepath.Join(d.folder, mergeTSFilename)
+	mFilePath := filepath.Join(d.folder, name) // mergeTSFilename
 	mFile, err := os.Create(mFilePath)
 	if err != nil {
 		return fmt.Errorf("create main TS file failed：%s", err.Error())

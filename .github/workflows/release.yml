@@ -48,6 +48,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+          body_path: ./release-notes.md
 
       - name: Upload artifacts to release
         uses: actions/upload-release-asset@v1
@@ -55,8 +56,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/m3d-${{ env.version }}-linux-amd64
-          asset_name: m3d-${{ env.version }}-linux-amd64
+          asset_path: dist/m3d-linux-amd64-${{ env.version }}
+          asset_name: m3d-linux-amd64-${{ env.version }}
           asset_content_type: application/octet-stream
 
       - name: Upload macOS binary
@@ -65,8 +66,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/m3d-${{ env.version }}-darwin-amd64
-          asset_name: m3d-${{ env.version }}-darwin-amd64
+          asset_path: dist/dist/m3d-darwin-amd64-${{ env.version }}
+          asset_name: dist/m3d-darwin-amd64-${{ env.version }}
           asset_content_type: application/octet-stream
 
       - name: Upload Windows binary
@@ -75,8 +76,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/m3d-${{ env.version }}-windows-amd64.exe
-          asset_name: m3d-${{ env.version }}-windows-amd64.exe
+          asset_path: dist/dist/m3d-windows-amd64--${{ env.version }}.exe
+          asset_name: dist/m3d-windows-amd64--${{ env.version }}.exe
           asset_content_type: application/octet-stream
 
       - name: Upload checksums
